@@ -1,0 +1,8 @@
+version: '2'
+services:
+    node:
+        image: nginx
+        volumes:
+            - ./index.html:/usr/share/nginx/html/index.html
+        ports:
+            - ${PROJECT_PORT}:80

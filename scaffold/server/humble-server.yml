@@ -1,0 +1,15 @@
+version: '1'
+
+proxy:
+    ip: 0.0.0.0
+    port: 80
+
+apps:
+    app1:
+        env: default
+        port: 1080
+        host: app1.docker.dev
+    app2:
+        env: default
+        port: 2080
+        host: app2.docker.dev
