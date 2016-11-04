@@ -1,3 +1,4 @@
+source "$PWD/inc/_includes.sh"
 
 PRINT_FEEDBACK="yes"
 P1=$1
@@ -40,10 +41,9 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo "wp-from:   $WP_MIGRATE_FROM"
     echo "wp-to:     $WP_MIGRATE_TO"
     echo ""
-    echo "(sleeping $BACKUP_DELAY secs, you can abort with Ctrl+c)"
+    enterToContinue
     echo ""
     echo ""
-    sleep $BACKUP_DELAY
 fi
 
 [ "$PRINT_FEEDBACK" == "yes" ] && echo "---> migrating database..."
