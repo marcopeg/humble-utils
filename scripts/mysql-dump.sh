@@ -16,7 +16,6 @@ if [ "--now" == "$last" ]; then
     [ "$P2" == "$last" ] && P2=""
 fi
 
-BACKUP_DELAY=${BACKUP_DELAY:-3}
 BACKUP_ROOT=${BACKUP_ROOT:-"data/backup"}
 BACKUP_DATE_FORMAT=${BACKUP_DATE_FORMAT:-"+%Y%m%d.%H%M%S"}
 BACKUP_DATE=$(date $BACKUP_DATE_FORMAT)
@@ -29,20 +28,18 @@ MYSQL_DB=${MYSQL_DB:-wordpress}
 MYSQL_DUMP_GZIP=${MYSQL_DUMP_GZIP:-"yes"}
 MYSQL_DUMP_FORMAT="%s___%p___%d"
 
-
 # Handle custom host
-CUSTOM_HOST="`echo $MYSQL_DB | grep '://' | sed -e's,^\(.*://\).*,\1,g'`"
+CUSTOM_HOST=$(urlGetService $MYSQL_DB)
 if [[ ! -z $CUSTOM_HOST ]]; then
-    MYSQL_HOST="${CUSTOM_HOST%???}"
-    MYSQL_DB=`echo $MYSQL_DB | sed -e s,$CUSTOM_HOST,,g`
+    MYSQL_HOST="$CUSTOM_HOST"
+    MYSQL_DB=$(urlGetPath $MYSQL_DB)
+    MYSQL_DB=${MYSQL_DB:1}
 fi
-
 
 MYSQL_DUMP_FILE_NAME=${P2:-$MYSQL_DUMP_FORMAT}
 MYSQL_DUMP_FILE_NAME="${MYSQL_DUMP_FILE_NAME/\%s/$MYSQL_HOST}"
 MYSQL_DUMP_FILE_NAME="${MYSQL_DUMP_FILE_NAME/\%p/$MYSQL_DB}"
 MYSQL_DUMP_FILE_NAME="${MYSQL_DUMP_FILE_NAME/\%d/$BACKUP_DATE}"
-
 
 # Compose target file
 MYSQL_DUMP_FILE_PATH="/$BACKUP_ROOT/$MYSQL_DUMP_FILE_NAME"
