@@ -2,6 +2,9 @@
 # mysql-dump
 #
 
+source "$PWD/inc/_includes.sh"
+
+
 PRINT_FEEDBACK="yes"
 P1=$1
 P2=$2
@@ -55,8 +58,7 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo "database:  $MYSQL_DB"
     echo "target:    $MYSQL_DUMP_FILE_PATH"
     echo ""
-    echo "(sleeping $BACKUP_DELAY secs, you can abort with Ctrl+c)"
-    sleep $BACKUP_DELAY
+    enterToContinue
     echo ""
     echo ""
 fi
