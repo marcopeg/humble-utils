@@ -1,6 +1,7 @@
 #
 # mysql-create-db
 #
+source "$PWD/inc/_includes.sh"
 
 MYSQL_HOST=${MYSQL_HOST:-mysql}
 MYSQL_USER=${MYSQL_USER:-root}
@@ -33,8 +34,7 @@ echo "database:  $MYSQL_DB"
 echo "charset:   $MYSQL_DB_CREATE_CHARSET"
 echo "force:     $MYSQL_DB_CREATE_FORCE"
 echo ""
-echo "(sleeping 3 secs, you can abort with Ctrl+c)"
-sleep 3
+enterToContinue
 echo ""
 echo ""
 

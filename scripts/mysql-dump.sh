@@ -16,7 +16,7 @@ if [ "--now" == "$last" ]; then
     [ "$P2" == "$last" ] && P2=""
 fi
 
-BACKUP_ROOT=${BACKUP_ROOT:-"data/backup"}
+BACKUP_ROOT=${BACKUP_ROOT:-"backup"}
 BACKUP_DATE_FORMAT=${BACKUP_DATE_FORMAT:-"+%Y%m%d.%H%M%S"}
 BACKUP_DATE=$(date $BACKUP_DATE_FORMAT)
 

@@ -2,6 +2,8 @@
 # mysql-seed
 #
 
+source "$PWD/inc/_includes.sh"
+
 PRINT_FEEDBACK="yes"
 P1=$1
 P2=$2
@@ -13,16 +15,12 @@ if [ "--now" == "$last" ]; then
     [ "$P2" == "$last" ] && P2=""
 fi
 
-BACKUP_DELAY=${BACKUP_DELAY:-3}
-BACKUP_ROOT=${BACKUP_ROOT:-"data/backup"}
-
-MYSQL_HOST=${MYSQL_HOST:-mysql}
-MYSQL_USER=${MYSQL_USER:-root}
-MYSQL_PASSWORD=${MYSQL_PASSWORD:-root}
+BACKUP_ROOT=${BACKUP_ROOT:-"backup"}
+MYSQL_USER=${MYSQL_USER:-"root"}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-"root"}
 
 # Compose target database
 MYSQL_DB=${P2:-$MYSQL_DB}
-MYSQL_DB=${MYSQL_DB:-"wordpress"}
 
 # Compose source backup
 MYSQL_SEED_FILE_PATH="/$BACKUP_ROOT/$P1"
@@ -45,6 +43,10 @@ if [[ ! -z $CUSTOM_HOST ]]; then
     MYSQL_DB=`echo $MYSQL_DB | sed -e s,$CUSTOM_HOST,,g`
 fi
 
+# Default database name
+MYSQL_HOST=${MYSQL_HOST:-"mysql"}
+MYSQL_DB=${MYSQL_DB:-"wordpress"}
+
 
 if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo ""
@@ -62,8 +64,7 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo "target:    $MYSQL_DB"
     echo "format:    $MYSQL_SEED_FORMAT"
     echo ""
-    echo "(sleeping $BACKUP_DELAY secs, you can abort with Ctrl+c)"
-    sleep $BACKUP_DELAY
+    enterToContinue
     echo ""
     echo ""
 fi
