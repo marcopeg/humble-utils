@@ -20,11 +20,11 @@ BACKUP_ROOT=${BACKUP_ROOT:-"backup"}
 BACKUP_DATE_FORMAT=${BACKUP_DATE_FORMAT:-"+%Y%m%d.%H%M%S"}
 BACKUP_DATE=$(date $BACKUP_DATE_FORMAT)
 
-MYSQL_HOST=${MYSQL_HOST:-mysql}
-MYSQL_USER=${MYSQL_USER:-root}
-MYSQL_PASSWORD=${MYSQL_PASSWORD:-root}
+MYSQL_HOST=${MYSQL_HOST:-"mysql"}
+MYSQL_USER=${MYSQL_USER:-"root"}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-"root"}
 MYSQL_DB=${MYSQL_DB:-$P1}
-MYSQL_DB=${MYSQL_DB:-wordpress}
+MYSQL_DB=${MYSQL_DB:-"wordpress"}
 MYSQL_DUMP_GZIP=${MYSQL_DUMP_GZIP:-"yes"}
 MYSQL_DUMP_FORMAT="%s___%p___%d"
 
@@ -48,7 +48,7 @@ MYSQL_DUMP_FILE_PATH="$MYSQL_DUMP_FILE_PATH.sql"
 
 if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo ""
-    echo "======== MYSQL DUMP ========"
+    echo "======== MYSQL BACKUP ========"
     echo "host:      $MYSQL_HOST"
     echo "user:      $MYSQL_USER"
     echo "password:  $MYSQL_PASSWORD"
@@ -60,7 +60,7 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo ""
 fi
 
-[ "$PRINT_FEEDBACK" == "yes" ] && echo "---> exporting data..."
+echo "[$MYSQL_HOST://$MYSQL_DB] mysql-backup start..."
 mkdir -p "/$BACKUP_ROOT"
 if [[ $MYSQL_DUMP_GZIP == "yes" ]]; then
     mysqldump -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB | gzip > $MYSQL_DUMP_FILE_PATH;
@@ -68,9 +68,7 @@ else
     mysqldump -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB > $MYSQL_DUMP_FILE_PATH;
 fi
 
-if [ "$PRINT_FEEDBACK" == "yes" ]; then
-    echo "---> mysql-dump complete!"
-    echo ""
-    echo ""
-fi
+echo "[$MYSQL_HOST://$MYSQL_DB] mysql-backup complete!"
+echo ""
+echo ""
 exit
