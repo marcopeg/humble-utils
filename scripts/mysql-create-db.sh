@@ -34,7 +34,8 @@ echo "database:  $MYSQL_DB"
 echo "charset:   $MYSQL_DB_CREATE_CHARSET"
 echo "force:     $MYSQL_DB_CREATE_FORCE"
 echo ""
-enterToContinue
+# need to work to accept both "--force and --now" as flags
+#enterToContinue
 echo ""
 echo ""
 

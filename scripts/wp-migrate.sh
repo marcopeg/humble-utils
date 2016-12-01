@@ -23,6 +23,7 @@ MYSQL_DB=${MYSQL_DB:-wordpress}
 
 WP_MIGRATE_FROM=${P1:-WP_MIGRATE_FROM}
 WP_MIGRATE_TO=${P2:-WP_MIGRATE_TO}
+WP_PREFIX=${WP_PREFIX:-wp_}
 
 
 # Handle custom host
@@ -40,6 +41,7 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo "database:  $MYSQL_DB"
     echo "wp-from:   $WP_MIGRATE_FROM"
     echo "wp-to:     $WP_MIGRATE_TO"
+    echo "wp-prefix: $WP_PREFIX"
     echo ""
     enterToContinue
     echo ""
@@ -47,10 +49,10 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
 fi
 
 [ "$PRINT_FEEDBACK" == "yes" ] && echo "---> migrating database..."
-mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE wp_options SET option_value = replace(option_value, '${WP_MIGRATE_FROM}', '${WP_MIGRATE_TO}') WHERE option_name = 'home' OR option_name = 'siteurl';"
-mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE wp_posts SET guid = replace(guid, '${WP_MIGRATE_FROM}','${WP_MIGRATE_TO}');"
-mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE wp_posts SET post_content = replace(post_content, '${WP_MIGRATE_FROM}', '${WP_MIGRATE_TO}');"
-mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE wp_postmeta SET meta_value = replace(meta_value,'${WP_MIGRATE_FROM}','${WP_MIGRATE_TO}');"
+mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE $WP_PREFIX""options SET option_value = replace(option_value, '${WP_MIGRATE_FROM}', '${WP_MIGRATE_TO}') WHERE option_name = 'home' OR option_name = 'siteurl';"
+mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE $WP_PREFIX""posts SET guid = replace(guid, '${WP_MIGRATE_FROM}','${WP_MIGRATE_TO}');"
+mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE $WP_PREFIX""posts SET post_content = replace(post_content, '${WP_MIGRATE_FROM}', '${WP_MIGRATE_TO}');"
+mysql -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB -e  "UPDATE $WP_PREFIX""postmeta SET meta_value = replace(meta_value,'${WP_MIGRATE_FROM}','${WP_MIGRATE_TO}');"
 
 if [ "$PRINT_FEEDBACK" == "yes" ]; then
     echo "migration completed."
