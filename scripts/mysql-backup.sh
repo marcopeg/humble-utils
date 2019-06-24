@@ -4,7 +4,6 @@
 
 source "$PWD/inc/_includes.sh"
 
-
 PRINT_FEEDBACK="yes"
 P1=$1
 P2=$2
@@ -61,7 +60,9 @@ if [ "$PRINT_FEEDBACK" == "yes" ]; then
 fi
 
 echo "[$MYSQL_HOST://$MYSQL_DB] mysql-backup start..."
-mkdir -p "/$BACKUP_ROOT"
+mkdir -p $(dirname "${MYSQL_DUMP_FILE_PATH}")
+
+
 if [[ $MYSQL_DUMP_GZIP == "yes" ]]; then
     mysqldump -h $MYSQL_HOST -u$MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DB | gzip > $MYSQL_DUMP_FILE_PATH;
 else
